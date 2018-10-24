@@ -1,0 +1,16 @@
+- fix je binaries en libraries, op dit moment zijn degene in de binaries folder compatible met onze coreos
+  - Anders zie: https://aur.archlinux.org/packages/libnvidia-container-tools/ voor buildscript
+- zet binaries in /opt/bin op node
+- zet libs (libnvidia-container.so.1.0.0) in /opt/nvidia/current/lib64 op node
+  - maak een symlink naar libnvidia-container.so.1
+  - ldconfig (check dat er geen errors komen)
+- zet daemon.json in /etc/docker op node
+- TODO: /opt/bin staat nog niet in path van docker daemon
+  - quick hack: mount --bind /opt/bin /usr/local/bin
+- systemctl restart docker
+  - check met journalctl of hij goed up komt
+- rol nvidia-device-plugin.yml uit
+  - TODO: pod is nu privileged als root anders werkte het niet.
+  - check dat deze pod goed start
+- test: kubectl apply -f ./pods/tensorflow.yaml
+  - run test.py in de pod

@@ -1,0 +1,108 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cni.projectcalico.org/podIP: 172.16.5.3/32
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{},"name":"test-gpu","namespace":"test-dev"},"spec":{"containers":[{"args":["while true; do sleep 30; done;"],"command":["/bin/sh","-c","--"],"image":"tensorflow/tensorflow:1.11.0-gpu-py3","name":"test-gpu","resources":{"limits":{"cpu":4,"memory":"20Gi"},"requests":{"cpu":1,"memory":"8Gi"}}}],"nodeSelector":{"type":"gpu"},"tolerations":[{"effect":"NoSchedule","key":"type","value":"gpu"}]}}
+  creationTimestamp: 2018-10-24T08:46:19Z
+  name: test-gpu
+  namespace: test-dev
+  resourceVersion: "57100025"
+  selfLink: /api/v1/namespaces/test-dev/pods/test-gpu
+  uid: 469154e7-d769-11e8-be4b-06f332e13a5e
+spec:
+  containers:
+  - args:
+    - while true; do sleep 30; done;
+    command:
+    - /bin/sh
+    - -c
+    - --
+    image: tensorflow/tensorflow:1.11.0-gpu-py3
+    imagePullPolicy: IfNotPresent
+    name: test-gpu
+    resources:
+      limits:
+        cpu: "4"
+        memory: 20Gi
+      requests:
+        cpu: "1"
+        memory: 8Gi
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-fkcjc
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  nodeName: ip-10-40-76-248.eu-west-1.compute.internal
+  nodeSelector:
+    type: gpu
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoSchedule
+    key: type
+    value: gpu
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: default-token-fkcjc
+    secret:
+      defaultMode: 420
+      secretName: default-token-fkcjc
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: 2018-10-24T08:46:19Z
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: 2018-10-24T11:51:43Z
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: 2018-10-24T08:46:19Z
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://26038eb52d0835cf2e12ec0e63dfc18b8aafee16e08210f35b4c55f03d1c094a
+    image: tensorflow/tensorflow:1.11.0-gpu-py3
+    imageID: docker-pullable://tensorflow/tensorflow@sha256:5854b0154159ed611483927835c208548e8f0ba960a800d2b063c1c3275ea6b9
+    lastState:
+      terminated:
+        containerID: docker://d66ca821de234ecbc53a5223a05ddb2077ea6a58879016dbc85709267d4479a0
+        exitCode: 128
+        finishedAt: 2018-10-24T11:46:38Z
+        message: 'OCI runtime create failed: container_linux.go:348: starting container
+          process caused "process_linux.go:402: container init caused \"process_linux.go:385:
+          running prestart hook 0 caused \\\"error running hook: exit status 1, stdout:
+          , stderr: exec command: [/usr/local/bin/nvidia-container-cli --load-kmods
+          configure --device=all --compute --utility --require=cuda>=9.0 --pid=26100
+          /var/lib/docker/overlay2/8119a8bde1677e9c5eba221ce5d19aaf048215f669e42f378d551ea17ce56ee3/merged]\\\\n/usr/local/bin/nvidia-container-cli:
+          /lib64/libc.so.6: version `GLIBC_2.27'' not found (required by /opt/nvidia-docker/lib/libnvidia-container.so.1)\\\\n\\\"\"":
+          unknown'
+        reason: ContainerCannotRun
+        startedAt: 2018-10-24T11:46:38Z
+    name: test-gpu
+    ready: true
+    restartCount: 9
+    state:
+      running:
+        startedAt: 2018-10-24T11:51:42Z
+  hostIP: 10.40.76.248
+  phase: Running
+  podIP: 172.16.5.3
+  qosClass: Burstable
+  startTime: 2018-10-24T08:46:19Z
