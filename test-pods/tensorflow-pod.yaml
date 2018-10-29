@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-gpu
+  namespace: test-dev
+spec:
+  containers:
+  - args:
+    - while true; do sleep 30; done;
+    command:
+    - /bin/sh
+    - -c
+    - --
+    image: tensorflow/tensorflow:1.11.0-gpu-py3
+    imagePullPolicy: IfNotPresent
+    name: test-gpu
+    resources:
+      limits:
+        cpu: "4"
+        memory: 20Gi
+      requests:
+        cpu: "1"
+        memory: 8Gi
+  nodeSelector:
+    type: gpu
+  restartPolicy: Always
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoSchedule
+    key: type
+    value: gpu
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300

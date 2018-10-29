@@ -1,0 +1,54 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: tensorflow-test
+  namespace: test-dev
+  labels:
+    app: tensorflow-test
+spec:
+  template:
+    metadata:
+      name: tensorflow-test
+      labels:
+        app: tensorflow-test
+    spec:
+      containers:
+      - args:
+        - while true; do sleep 30; done;
+        command:
+        - /bin/sh
+        - -c
+        - --
+        image: tensorflow/tensorflow:1.11.0-gpu-py3
+        imagePullPolicy: IfNotPresent
+        name: test-gpu
+        resources:
+          limits:
+            cpu: "4"
+            memory: 20Gi
+          requests:
+            cpu: "1"
+            memory: 8Gi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        type: gpu
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: type
+        value: gpu
+      - effect: NoExecute
+        key: node.kubernetes.io/not-ready
+        operator: Exists
+        tolerationSeconds: 300
+      - effect: NoExecute
+        key: node.kubernetes.io/unreachable
+        operator: Exists
+        tolerationSeconds: 300
