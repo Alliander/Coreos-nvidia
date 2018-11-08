@@ -10,7 +10,7 @@ Each release of this repository contains two tarballs:
 
 ## Usage instructions
 
-- Add the buildscripts from [https://github.com/Clarifai/coreos-nvidia/](https://github.com/Clarifai/coreos-nvidia/), especially [https://github.com/Clarifai/coreos-nvidia/pull/4/files](https://github.com/Clarifai/coreos-nvidia/pull/4/files) to `userdata/cloud-config-worker`. Look for `{{ if .Gpu.Nvidia.IsEnabledOn .InstanceType }}`.
+- Add the buildscripts from [https://github.com/Clarifai/coreos-nvidia/](https://github.com/Clarifai/coreos-nvidia/), especially [https://github.com/Clarifai/coreos-nvidia/pull/4/files](https://github.com/Clarifai/coreos-nvidia/pull/4/files) to `userdata/cloud-config-worker`. Look for `{{ if .Gpu.Nvidia.IsEnabledOn .InstanceType }}`. (we use https://github.com/kubernetes-incubator/kube-aws/ which uses these scripts)
 - Add the following script as well (this will extract the container runtime files to `/` on the node):
   ```
     - path: /opt/bin/nvidia-install-container-runtime.sh
