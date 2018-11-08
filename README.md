@@ -118,6 +118,9 @@ If we do need new binaries (or if you just want to use the latest Nvidia contain
 Luckily, updating the Nvidia driver binaries is much easier than updating containter runtime:
 
 - Provision a new Coreos gpu node. It will see that there are no pre-compiled Nvidia driver binaries, so it will fallback to compiling them itself.
+- Build the binaries and keep the exported tars:
+    - cd /opt/nvidia-build/
+    - ./build.sh --keep
 - Retrieve the following files from the node in `/opt/nvidia-build/:
     - tools-<NVIDIA_VERSION>.tar.bz2
     - modules-<COREOS_VERSION>-<NVIDIA_VERSION>.tar.bz2
